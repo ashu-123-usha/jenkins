@@ -1,0 +1,27 @@
+- name: Setup Apache and deploy website
+  hosts: web1
+  become: yes
+ 
+  tasks:
+    - name: Update apt
+      apt:
+        update_cache: yes
+ 
+    - name: Install Apache
+      apt:
+        name: apache2
+        state: present
+ 
+    - name: Start Apache
+      service:
+        name: apache2
+        state: started
+        enabled: yes
+ 
+    - name: Copy website folder (all files)
+      copy:
+        src: site_content/
+        dest: /var/www/html/
+        owner: www-data
+        group: www-data
+        mode: "0644"
